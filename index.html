@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hi 💗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    /* ===== Global ===== */
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #fde2e4; /* soft pink */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: "Inter", "Segoe UI", sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    /* ===== Speech Bubble ===== */
+    .bubble {
+      background: white;
+      padding: 14px 18px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-bottom: 20px;
+      font-size: 18px;
+      color: #444;
+      position: relative;
+      animation: fadeIn 1s ease;
+    }
+
+    .bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 40px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid white;
+    }
+
+    /* ===== Cat ===== */
+    .cat {
+      width: 140px;
+      height: 120px;
+      background: #f8c8dc;
+      border-radius: 70px 70px 60px 60px;
+      position: relative;
+      cursor: pointer;
+      animation: idle 3s infinite ease-in-out;
+    }
+
+    /* Ears */
+    .ear {
+      width: 40px;
+      height: 40px;
+      background: #f8c8dc;
+      position: absolute;
+      top: -20px;
+      border-radius: 10px;
+    }
+
+    .ear.left { left: 10px; transform: rotate(-10deg); }
+    .ear.right { right: 10px; transform: rotate(10deg); }
+
+    /* Eyes */
+    .eye {
+      width: 10px;
+      height: 10px;
+      background: #333;
+      border-radius: 50%;
+      position: absolute;
+      top: 45px;
+    }
+
+    .eye.left { left: 45px; }
+    .eye.right { right: 45px; }
+
+    /* Mouth */
+    .mouth {
+      width: 20px;
+      height: 10px;
+      border-bottom: 2px solid #333;
+      position: absolute;
+      top: 65px;
+      left: 60px;
+      border-radius: 0 0 10px 10px;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes idle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(4px); }
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      30% { transform: translateY(-6px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="bubble" class="bubble">
+      Hi, my name is Duwi
+    </div>
+
+    <div id="cat" class="cat">
+      <div class="ear left"></div>
+      <div class="ear right"></div>
+      <div class="eye left"></div>
+      <div class="eye right"></div>
+      <div class="mouth"></div>
+    </div>
+  </div>
+
+  <script>
+    const cat = document.getElementById("cat");
+    const bubble = document.getElementById("bubble");
+
+    const messages = [
+      "Hi, my name is Duwi",
+      "I'm here with you 💗",
+      "You can click me",
+      "It's okay to take your time"
+    ];
+
+    let index = 0;
+
+    cat.addEventListener("click", () => {
+      index = (index + 1) % messages.length;
+      bubble.textContent = messages[index];
+
+      cat.style.animation = "bounce 0.4s ease";
+      setTimeout(() => {
+        cat.style.animation = "idle 3s infinite ease-in-out";
+      }, 400);
+    });
+  </script>
+</body>
+</html>
