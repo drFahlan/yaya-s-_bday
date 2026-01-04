@@ -1,155 +1,1493 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Hi 💗</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Birthday Intro</title>
 
-  <style>
-    /* ===== Global ===== */
-    body {
-      margin: 0;
-      height: 100vh;
-      background: #fde2e4; /* soft pink */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: "Inter", "Segoe UI", sans-serif;
-    }
+<style>
+.continue-btn {
+  position: absolute;
+  bottom: 24px;
+  right: 24px;
+  padding: 12px 20px;
+  border-radius: 18px;
+  border: none;
+  background: #ffb7c5;
+  color: #5a2a34;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+}
 
-    .container {
-      text-align: center;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top, #ffd6df, #ffb7c5);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-    /* ===== Speech Bubble ===== */
-    .bubble {
-      background: white;
-      padding: 14px 18px;
-      border-radius: 16px;
-      display: inline-block;
-      margin-bottom: 20px;
-      font-size: 18px;
-      color: #444;
-      position: relative;
-      animation: fadeIn 1s ease;
-    }
 
-    .bubble::after {
-      content: "";
-      position: absolute;
-      bottom: -10px;
-      left: 40px;
-      width: 0;
-      height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 10px solid white;
-    }
+  .scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 
-    /* ===== Cat ===== */
-    .cat {
-      width: 140px;
-      height: 120px;
-      background: #f8c8dc;
-      border-radius: 70px 70px 60px 60px;
-      position: relative;
-      cursor: pointer;
-      animation: idle 3s infinite ease-in-out;
-    }
+  .cat {
+    position: absolute;
+    left: 50%;
+    top: 38%;
+    transform: translate(-50%, -50%);
+    font-size: 120px;
+    animation: idle 3s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 3;
+  }
 
-    /* Ears */
-    .ear {
-      width: 40px;
-      height: 40px;
-      background: #f8c8dc;
-      position: absolute;
-      top: -20px;
-      border-radius: 10px;
-    }
+  @keyframes idle {
+    0%,100% { transform: translate(-50%, -50%) translateY(0); }
+    50% { transform: translate(-50%, -50%) translateY(-10px); }
+  }
 
-    .ear.left { left: 10px; transform: rotate(-10deg); }
-    .ear.right { right: 10px; transform: rotate(10deg); }
+  .reaction {
+    position: absolute;
+    left: 50%;
+    top: 24%;
+    transform: translateX(-50%);
+    background: #fff;
+    padding: 10px 14px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.12);
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity .3s ease, transform .3s ease;
+    z-index: 4;
+    pointer-events: none;
+  }
 
-    /* Eyes */
-    .eye {
-      width: 10px;
-      height: 10px;
-      background: #333;
-      border-radius: 50%;
-      position: absolute;
-      top: 45px;
-    }
+  .reaction.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-6px);
+  }
 
-    .eye.left { left: 45px; }
-    .eye.right { right: 45px; }
+  .dialogue {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 620px;
+    background: #fff;
+    padding: 18px 22px;
+    border-radius: 20px;
+    box-shadow: 0 16px 40px rgba(0,0,0,.12);
+    font-size: 17px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    text-align: center;
+    min-height: 72px;
+    z-index: 3;
+  }
 
-    /* Mouth */
-    .mouth {
-      width: 20px;
-      height: 10px;
-      border-bottom: 2px solid #333;
-      position: absolute;
-      top: 65px;
-      left: 60px;
-      border-radius: 0 0 10px 10px;
-    }
+  .hint {
+    position: absolute;
+    bottom: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+  }
 
-    /* ===== Animations ===== */
-    @keyframes idle {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(4px); }
-    }
+  .quiz {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    margin-top: 16px;
+  }
 
-    @keyframes bounce {
-      0% { transform: translateY(0); }
-      30% { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
-    }
+  .pick {
+    cursor: pointer;
+    transition: transform .2s ease;
+    text-align: center;
+  }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+  .pick:hover { transform: scale(1.1); }
+
+  .emoji { font-size: 72px; }
+  .label { font-weight: 600; margin-top: 6px; }
+
+  /* RECAP */
+  .recap {
+    position: absolute;
+    inset: 0;
+    padding: 40px 20px;
+    display: none;
+    z-index: 5;
+  }
+  .recap.show { display: block; }
+
+  .recap h2 { text-align: center; margin-bottom: 24px; }
+
+  .recap-grid {
+    max-width: 700px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px 18px;
+    align-items: center;
+  }
+
+  .recap-q { font-size: 16px; }
+  .recap-a { font-size: 28px; }
+
+  /* CHARACTER DIAGRAM */
+  .diagram {
+    position: absolute;
+    inset: 0;
+    display: none;
+    z-index: 6;
+  }
+
+  .diagram.show { display: block; }
+
+  .diagram-center {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    background: #ffb7c5;
+    color: #5a2a34;
+    padding: 20px 32px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 20px;
+    box-shadow: 0 14px 36px rgba(255,183,197,.45);
+  }
+
+  .bubble {
+    position: absolute;
+    background: #ffd6df;
+    color: #5a2a34;
+    padding: 20px 26px;
+    border-radius: 22px;
+    box-shadow: 0 14px 36px rgba(255,183,197,.45);
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 260px;
+    text-align: center;
+    animation: pop .6s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes pop {
+    from { opacity: 0; transform: scale(.9); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+/* BUBBLE REVEAL */
+.bubble {
+  cursor: pointer;
+  user-select: none;
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ffb7c5;
+  color: #5a2a34;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 22px;
+  font-weight: 600;
+  letter-spacing: .5px;
+  transition: opacity .25s ease;
+}
+
+.bubble.revealed::after {
+  opacity: 0;
+  pointer-events: none;
+}
+/* FINAL BUBBLE PAGE */
+.final-page {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 7;
+}
+
+.final-page.show {
+  display: block;
+}
+
+.final-bubble {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffd6df;
+  color: #5a2a34;
+  padding: 28px 36px;
+  border-radius: 28px;
+  font-size: 22px;
+  font-weight: 600;
+  box-shadow: 0 18px 48px rgba(255,183,197,.5);
+  animation: pop .6s ease forwards;
+}
+
+/* ACCOMPLISHMENT PAGE */
+.accomplishment {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 8;
+}
+
+.accomplishment.show {
+  display: block;
+}
+
+.accomp-wrap {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.accomp-img {
+  width: 180px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 0 14px 36px rgba(0,0,0,.18);
+}
+
+.accomp-cat {
+  position: relative;
+  font-size: 110px;
+}
+
+/* CAT SPEECH BUBBLE */
+.accomp-bubble {
+  position: absolute;
+  top: -70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #444;
+  padding: 14px 18px;
+  border-radius: 18px;
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 12px 30px rgba(0,0,0,.18);
+}
+
+/* SHOWCASE PAGE */
+.showcase {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 9;
+}
+
+.showcase.show {
+  display: block;
+}
+
+.showcase-wrap {
+  position: absolute;
+  left: 50%;
+  top: 48%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 48px;
+}
+
+/* FLIP CARD */
+.card {
+  width: 220px;
+  height: 280px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(.4,.2,.2,1);
+}
+
+.card.revealed .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* replay same-direction flip while staying on back */
+.card.replay-flip .card-inner {
+  animation: replayFlip 0.8s cubic-bezier(.4,.2,.2,1);
+}
+
+@keyframes replayFlip {
+  from { transform: rotateY(0deg); }
+  to   { transform: rotateY(180deg); }
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 22px;
+  overflow: hidden; /* ✅ THIS IS THE FIX */
+  box-shadow: 0 18px 46px rgba(0,0,0,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* FRONT */
+.card-front {
+  background: #fff;
+}
+
+/* BACK */
+.card-back {
+  background: #fff;
+  transform: rotateY(180deg);
+}
+
+.card-back img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.card-title {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,.9);
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* PAGE BASE */
+.page {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, #ffd6df, #ffb7c5);
+  display: none;
+}
+.page.show {
+  display: block;
+}
+
+/* PROUD SCENE */
+.proud {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 11;
+}
+
+.proud.show {
+  display: block;
+}
+
+.proud-cat {
+  position: absolute;
+  top: 28%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 96px;
+}
+
+.proud-dialogue {
+  position: absolute;
+  top: 42%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 16px 22px;
+  border-radius: 20px;
+  font-size: 17px;
+  font-weight: 500;
+  box-shadow: 0 16px 40px rgba(0,0,0,.18);
+  text-align: center;
+  max-width: 520px;
+}
+
+.proud-images {
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 700px;
+}
+
+.proud-images img {
+  width: 140px;
+  height: 140px;          /* ⬅️ FIXED HEIGHT */
+  object-fit: cover;      /* ⬅️ crops nicely, no stretching */
+  border-radius: 16px;
+  box-shadow: 0 14px 36px rgba(0,0,0,.22);
+}
+
+
+/* WISH PAGE */
+.wish {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 13;
+}
+
+.wish.show {
+  display: block;
+}
+
+.wish-cat {
+  position: absolute;
+  top: 26%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 96px;
+}
+
+.wish-bubble {
+  position: absolute;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 14px 20px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 14px 36px rgba(0,0,0,.18);
+  text-align: center;
+  max-width: 520px;
+}
+
+.wish-input-wrap {
+  position: absolute;
+  top: 44%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#wishInput {
+  width: 320px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: none;
+  font-size: 15px;
+  outline: none;
+  box-shadow: 0 10px 28px rgba(0,0,0,.18);
+}
+
+.wish-list {
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 720px;
+}
+
+.wish-item {
+  background: #fff;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.18);
+}
+
+
+/* FINAL MESSAGE PAGE */
+.final-message {
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 12;
+}
+
+.final-message.show {
+  display: block;
+}
+
+.final-message-text {
+  position: absolute;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 22px 28px;
+  border-radius: 22px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 520px;
+  box-shadow: 0 18px 48px rgba(0,0,0,.18);
+}
+
+/* CARD CONVO */
+.card-convo {
+  position: absolute;
+  top: -48px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #444;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  opacity: 0;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+.card.revealed .card-convo {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-6px);
+}
+
+/* CARD 2 STORY BUBBLE */
+.card2-bubble {
+  position: absolute;
+  bottom: calc(48% + 180px); /* above card2 */
+  left: 50%;
+  transform: translateX(110px); /* align above card2 */
+  background: #fff;
+  color: #444;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  opacity: 0;
+  transition: opacity .4s ease, transform .4s ease;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.card2-bubble.show {
+  opacity: 1;
+  transform: translateX(110px) translateY(-6px);
+}
+
+
+/* SHOWCASE CAT (TOP LEFT) */
+.showcase-cat {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 64px;
+  z-index: 10;
+}
+
+.showcase-bubble {
+  position: absolute;
+  top: 20px;
+  left: 92px; /* ⬅️ moves bubble BESIDE the cat */
+  background: #fff;
+  color: #444;
+  padding: 12px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  max-width: 260px;
+
+  opacity: 0;                 /* ⬅️ hidden by default */
+  pointer-events: none;       /* ⬅️ non-interactive */
+  transition: opacity .3s ease, transform .3s ease;
+  transform: translateY(4px);
+}
+
+.showcase-bubble.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+/* EXTRA CARD APPEAR (80% SIZE, FADE-IN) */
+/* EXTRA CARD APPEAR (REMOVED FROM LAYOUT UNTIL REVEALED) */
+.card.hidden {
+  display: none;          /* ✅ key fix: doesn't take flex space */
+}
+
+.card.previsible {
+  display: block;
+  opacity: 0;             /* start invisible */
+  pointer-events: none;
+  transform: scale(0.8);  /* 80% size */
+}
+
+.card.visible {
+  display: block;
+  opacity: 1;             /* fade to visible */
+  pointer-events: auto;
+  transform: scale(0.8);  /* keep 80% size */
+  transition: opacity 0.6s ease;
+}
+
+/* FINAL CAT PAGE */
+.final-cat {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 110px;
+}
+
+.final-cat-bubble {
+  position: absolute;
+  top: 26%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  padding: 18px 24px;
+  border-radius: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 14px 36px rgba(0,0,0,.18);
+  text-align: center;
+  max-width: 520px;
+}
+
+
+</style>
 </head>
 
 <body>
-  <div class="container">
-    <div id="bubble" class="bubble">
-      Hi, my name is Duwi
-    </div>
+<audio id="bgm" src="assets/birthday.mp3" loop></audio>
 
-    <div id="cat" class="cat">
-      <div class="ear left"></div>
-      <div class="ear right"></div>
-      <div class="eye left"></div>
-      <div class="eye right"></div>
-      <div class="mouth"></div>
-    </div>
+
+<div class="scene" id="scene">
+  <div id="reaction" class="reaction"></div>
+  <div id="cat" class="cat">🐱</div>
+  <div id="dialogue" class="dialogue"></div>
+  <div class="hint">click anywhere</div>
+
+  <div id="recap" class="recap page">
+    <h2>Let’s see what did Duwi answered</h2>
+    <div class="recap-grid" id="recapGrid"></div>
   </div>
 
-  <script>
-    const cat = document.getElementById("cat");
-    const bubble = document.getElementById("bubble");
+  <!-- CHARACTER DIAGRAM -->
+  <div id="diagram" class="diagram page">
+    <div class="diagram-center">Yayaa</div>
 
-    const messages = [
-      "Hi, my name is Duwi iiii",
-      "I'm here with you 💗",
-      "You can click me",
-      "It's okay to take your time"
-    ];
+    <div class="bubble" style="top:16%; left:18%;">strong mind<br>soft heart</div>
+    <div class="bubble" style="top:14%; right:18%;">quietly caring</div>
+    <div class="bubble" style="top:38%; left:6%;">laughs at small things</div>
+    <div class="bubble" style="top:38%; right:6%;">beautiful and sweet</div>
+    <div class="bubble" style="bottom:22%; left:20%;">solehahh</div>
+    <div class="bubble" style="bottom:22%; right:20%;">gentle but strong</div>
 
-    let index = 0;
+  </div>
+<!-- FINAL SINGLE BUBBLE -->
+<div id="finalPage" class="final-page page">
+  <div class="final-bubble">
+    more than words can say
+  </div>
+</div>
 
-    cat.addEventListener("click", () => {
-      index = (index + 1) % messages.length;
-      bubble.textContent = messages[index];
+<!-- ACCOMPLISHMENT PAGE -->
+<div id="accomplishment" class="accomplishment page">
+  <div class="accomp-wrap">
+    <div class="accomp-cat">
+      🐱
+      <div class="accomp-bubble">
+        and little yaya must be proud and happy
+      </div>
+    </div>
+  </div>
+</div>
 
-      cat.style.animation = "bounce 0.4s ease";
+<!-- SHOWCASE PAGE -->
+<!-- SHOWCASE PAGE -->
+<div id="showcase" class="showcase page">
+  <!-- SHOWCASE CAT + CONVO -->
+  <div class="showcase-cat">🐱</div>
+  <div id="showcaseBubble" class="showcase-bubble">
+    little yaya must be grumpy that day hehe &gt;&lt;
+  </div>
+
+  <div class="showcase-wrap">
+    <!-- CARD 1 -->
+    <div class="card" id="card1">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/little.jpg" alt="Day One" />
+          <div class="card-title">day one</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div id="card2Bubble" class="card2-bubble"></div>
+ 
+    <div class="card" id="card2">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/grad.jpeg" alt="One Day" />
+          <div class="card-title">one day</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="card hidden" id="card3">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/parents.jpeg" alt="parents" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 4 -->
+    <div class="card hidden" id="card4">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/friends.jpeg" alt="friends" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 5 -->
+    <div class="card hidden" id="card5">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/work.jpeg" alt="work" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 6 -->
+    <div class="card hidden" id="card6">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/car.jpeg" alt="car" />
+        </div>
+      </div>
+    </div>
+
+    <!-- CARD 7 -->
+    <div class="card hidden" id="card7">
+      <div class="card-inner">
+        <div class="card-face card-front"></div>
+        <div class="card-face card-back">
+          <img src="assets/365.jpeg" alt="365 days" />
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<!-- PROUD SCENE -->
+<div id="proud" class="proud page">
+  <div class="proud-cat">🐱</div>
+
+  <div id="proudDialogue" class="proud-dialogue">
+    not only little yaya,
+  </div>
+
+  <div id="proudImages" class="proud-images"></div>
+</div>
+
+
+<!-- FINAL MESSAGE PAGE -->
+<div id="finalMessage" class="final-message page">
+  <div id="finalMessageText" class="final-message-text">
+    We want yaya to be happy and bring happiness to everyone.
+  </div>
+</div>
+
+<!-- WISH PAGE -->
+<div id="wish" class="wish page">
+  <div class="wish-cat">🐱</div>
+
+  <div id="wishBubble" class="wish-bubble">
+    let's continue your journey sweet yayaa, with duwi beside you
+  </div>
+
+  <div class="wish-input-wrap">
+    <input
+      id="wishInput"
+      type="text"
+      placeholder="type a wish and press enter…"
+    />
+  </div>
+
+  <div id="wishList" class="wish-list"></div>
+  <button id="wishContinueBtn" class="continue-btn">
+  continue
+</button>
+
+</div>
+
+<!-- HAPPINESS BAR PAGE -->
+<!-- FINAL CAT PAGE -->
+<div id="happinessBar" class="page" onclick="event.stopPropagation()">
+  <div class="final-cat">🐱</div>
+  <div id="finalCatBubble" class="final-cat-bubble">
+    happy birthday yaya, love, duwi.
+  </div>
+</div>
+
+
+<script>
+
+let showcaseConvoStep = 0;
+const showcaseBubble = document.getElementById("showcaseBubble");
+const showcaseCat = document.querySelector(".showcase-cat");
+
+function advanceShowcaseConvo() {
+  if (!showcaseConvoEnabled) return;
+
+  // first advance: change text
+  if (showcaseConvoStep === 0) {
+    showcaseBubble.textContent =
+      'anyway, this is not the only "one day" yaya has.';
+    showcaseConvoStep = 1;
+    return;
+  }
+
+  if (showcaseConvoStep === 1 && !showcaseExpansionDone) {
+  showcaseExpansionDone = true;
+  showcaseConvoStep = 2;
+
+  flipCard2ForwardOnce(); // start slideshow
+  return;
+}
+
+  
+}
+
+function flipCard2ForwardOnce() {
+    if (card2NextIndex >= card2NextImages.length) {
+    setTimeout(() => {
+        showPage("proud");
+        startProudScene();
+    }, 1200);
+    return;
+    }
+
+
+
+
+  // update image + text BEFORE flip
+  card2BackImg.src = card2NextImages[card2NextIndex];
+  card2Bubble.textContent = card2Captions[card2NextIndex];
+  card2Bubble.classList.add("show");
+
+  card2NextIndex++;
+
+  // replay same-direction flip
+  card2.classList.remove("replay-flip");
+  void card2.offsetWidth; // force reflow
+  card2.classList.add("replay-flip");
+
+  // schedule next flip
+  setTimeout(flipCard2ForwardOnce, 2100);
+}
+
+
+
+function autoFlipCard2() {
+  if (autoFlipCount >= AUTO_FLIP_TOTAL) return;
+
+  // flip
+  card2.classList.toggle("revealed");
+
+  autoFlipCount++;
+
+  // flip back after a short delay
+  setTimeout(() => {
+    card2.classList.toggle("revealed");
+
+    // schedule next flip
+    setTimeout(autoFlipCard2, 300);
+  }, 300);
+}
+
+
+const pages = document.querySelectorAll(".page");
+
+function showPage(id) {
+  pages.forEach(p => p.classList.remove("show"));
+  document.getElementById(id).classList.add("show");
+}
+
+  const CAT_NAME = "Duwi";
+
+  const dialogueEl = document.getElementById("dialogue");
+  const reactionEl = document.getElementById("reaction");
+  const recapEl = document.getElementById("recap");
+  const recapGrid = document.getElementById("recapGrid");
+  const diagramEl = document.getElementById("diagram");
+
+  const steps = [
+    `Hi.`,
+    `I’m ${CAT_NAME}.`,
+    `Well… kind of.`,
+    `I’m a cat version of ${CAT_NAME}.`,
+    `I’ll be your guide today.`,
+    `Before we go on…`,
+    `what should I call you?`
+  ];
+
+  const quizQuestions = [
+    "Who forgets easily?",
+    "Who gets angry often?",
+    "Who gets sleepy first?",
+    "Who is more stubborn?",
+    "Who fart the most?"
+  ];
+const postQuizLines = [
+  "hehehehehheh.",
+  "it's only a tiny part of what duwi thinks of you.",
+  "for duwi, yayaa is..."
+];
+
+
+  const reactionsHim = ["I'll take that", "I doubt that"];
+  const reactionHer = "no comment";
+
+  let step = 0;
+  let typing = false;
+  let awaitingName = false;
+  let name = "";
+  let inGame = false;
+  let qIndex = 0;
+let inPostQuiz = false;
+let postQuizIndex = 0;
+
+
+  function typeLine(text, speed = 26) {
+    typing = true;
+    dialogueEl.textContent = "";
+    let i = 0;
+    const timer = setInterval(() => {
+      dialogueEl.textContent += text[i++];
+      if (i >= text.length) {
+        clearInterval(timer);
+        typing = false;
+      }
+    }, speed);
+  }
+
+  function showReaction(text) {
+    reactionEl.textContent = text;
+    reactionEl.classList.add("show");
+    setTimeout(() => reactionEl.classList.remove("show"), 900);
+  }
+
+  function showQuiz() {
+    const q = quizQuestions[qIndex];
+    dialogueEl.innerHTML = `
+      <div><strong>${q}</strong></div>
+      <div class="quiz">
+        <div class="pick" onclick="pick('duwii')">
+          <div class="emoji">🐱</div>
+          <div class="label">duwii</div>
+        </div>
+        <div class="pick" onclick="pick('yayaa')">
+          <div class="emoji">🐈‍⬛</div>
+          <div class="label">yayaa</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function pick(who) {
+    if (who === "duwii") {
+      showReaction(reactionsHim[Math.floor(Math.random() * reactionsHim.length)]);
+    } else {
+      showReaction(reactionHer);
+    }
+
+    qIndex++;
+    if (qIndex < quizQuestions.length) {
+      setTimeout(showQuiz, 1000);
+    } else {
+      setTimeout(showRecap, 1200);
+    }
+  }
+
+  function showRecap() {
+    typeLine("let’s see what did duwi answered.");
+    setTimeout(() => {
+      recapGrid.innerHTML = "";
+      quizQuestions.forEach(q => {
+        recapGrid.innerHTML += `
+          <div class="recap-q">${q}</div>
+          <div class="recap-a">🐈‍⬛</div>
+        `;
+      });
+      showPage("recap");
+      setTimeout(showDiagramIntro, 2000);
+    }, 1600);
+  }
+
+function showDiagramIntro() {
+  recapEl.classList.remove("show");
+  inPostQuiz = true;
+  postQuizIndex = 0;
+  typeLine(postQuizLines[postQuizIndex]);
+}
+
+
+function advance() {
+
+  if (document.getElementById("happinessBar").classList.contains("show")) {
+    return;
+  }
+
+
+    if (document.getElementById("wish").classList.contains("show")) {
+  advanceWishConvo();
+  return;
+    }
+
+
+    if (document.getElementById("finalMessage").classList.contains("show")) {
+    advanceFinalMessage();
+    return;
+    }
+
+
+    if (document.getElementById("proud").classList.contains("show")) {
+    advanceProudScene();
+    return;
+    }
+
+// Move from accomplishment → showcase
+    // Showcase convo progression
+    // ❗ Disable global click handler on showcase
+    if (showcaseEl.classList.contains("show") &&
+        showcaseStep === 2 &&
+        !typing) {
+    advanceShowcaseConvo();
+    return;
+    }
+
+
+    if (accomplishmentEl.classList.contains("show") && !typing) {
+    showShowcaseIntro();
+    return;
+    }
+
+    if (inPostQuiz && !typing) {
+    postQuizIndex++;
+
+    if (postQuizIndex < postQuizLines.length) {
+        typeLine(postQuizLines[postQuizIndex]);
+    } else {
+        inPostQuiz = false;
+        showPage("diagram");
+    }
+    return;
+    }
+
+    
+    if (
+    (typing && !showcaseEl.classList.contains("show")) ||
+    inGame ||
+    recapEl.classList.contains("show") ||
+    diagramEl.classList.contains("show")
+    ) return;
+
+
+    if (step < steps.length) {
+      typeLine(steps[step++]);
+      return;
+    }
+
+    if (!awaitingName) {
+      awaitingName = true;
+      dialogueEl.innerHTML =
+        `Nice to meet you, <span id="name" class="inline-input" contenteditable></pan>.`;
+      document.getElementById("name").focus();
+      return;
+    }
+
+    if (!name) {
+      const n = document.getElementById("name")?.textContent.trim();
+      if (!n) return;
+      name = n;
+      typeLine(`Alright, ${name}.\nLet’s play a small game.`);
+      return;
+    }
+
+    inGame = true;
+    showQuiz();
+  }
+
+const bgm = document.getElementById("bgm");
+let musicStarted = false;
+
+document.getElementById("scene").addEventListener("click", () => {
+  if (!musicStarted) {
+    bgm.volume = 0.4;   // adjust if needed
+    bgm.volume = 0;
+    bgm.play();
+
+    let v = 0;
+    const fade = setInterval(() => {
+    v += 0.02;
+    bgm.volume = Math.min(v, 0.4);
+    if (v >= 0.4) clearInterval(fade);
+    }, 100);
+
+    musicStarted = true;
+  }
+  advance();
+});
+
+
+  // start
+  typeLine(steps[step++]);
+const bubbles = document.querySelectorAll(".bubble");
+let revealedCount = 0;
+
+bubbles.forEach(bubble => {
+  bubble.addEventListener("click", e => {
+    e.stopPropagation();
+    if (bubble.classList.contains("revealed")) return;
+
+    bubble.classList.add("revealed");
+    revealedCount++;
+
+    if (revealedCount === bubbles.length) {
       setTimeout(() => {
-        cat.style.animation = "idle 3s infinite ease-in-out";
-      }, 400);
-    });
-  </script>
+        diagramEl.classList.remove("show");
+        showPage("finalPage");
+
+        setTimeout(() => {
+        showAccomplishment();
+        }, 1800);
+
+      }, 600);
+    }
+  });
+});
+
+const accomplishmentEl = document.getElementById("accomplishment");
+
+function showAccomplishment() {
+  document.getElementById("finalPage").classList.remove("show");
+  showPage("accomplishment");
+  //typeLine("little yaya must be proud of you now.");
+}
+
+const showcaseEl = document.getElementById("showcase");
+const card1 = document.getElementById("card1");
+const card2 = document.getElementById("card2");
+const card2BackImg = card2.querySelector(".card-back img");
+const card2Bubble = document.getElementById("card2Bubble");
+
+const card2Img = card2.querySelector(".card-back img");
+
+let showcaseStep = 0;
+let showcaseConvoEnabled = false; // ✅ ADD THIS
+let showcaseExpansionDone = false;
+/* EXTRA CARDS (3–7) */
+const extraCards = [
+  document.getElementById("card3"),
+  document.getElementById("card4"),
+  document.getElementById("card5"),
+  document.getElementById("card6"),
+  document.getElementById("card7"),
+];
+
+// Images that come AFTER card2 (grad)
+const card2NextImages = [
+  "assets/grad.jpeg",        // 2
+  "assets/parents.jpeg",     // 3
+  "assets/friends.jpeg",     // 4
+  "assets/work.jpeg",        // 5
+  "assets/car.jpeg",         // 6
+  "assets/365.jpeg",         // 7
+];
+
+const card2Captions = [
+  "graduations",
+  "make ayah bunda happy",
+  "make friends",
+  "have a job",
+  "learned to drive",
+  "self investment",
+];
+
+
+let card2NextIndex = 0;
+
+
+let nextExtraIndex = 0;
+let autoFlipCount = 0;
+const AUTO_FLIP_TOTAL = extraCards.length; // number of remaining cards
+// Images to cycle through on card2
+const card2Images = [
+  "assets/parents.jpeg",
+  "assets/friends.jpeg",
+  "assets/work.jpeg",
+  "assets/car.jpeg",
+  "assets/365.jpeg",
+];
+
+let card2ImageIndex = 0;
+
+
+function showShowcaseIntro() {
+  accomplishmentEl.classList.remove("show");
+  typeLine("take a look at this");
+  setTimeout(() => {
+    card2Bubble.classList.remove("show");
+    showPage("showcase");
+  }, 1200);
+}
+
+
+/* Card 1 logic */
+card1.addEventListener("click", e => {
+  e.stopPropagation();
+  if (showcaseStep !== 0) return;
+
+  card1.classList.add("revealed");
+  showcaseStep = 1;
+});
+
+/* Card 2 logic – convo starts here */
+card2.addEventListener("click", e => {
+  e.stopPropagation();
+  if (showcaseStep !== 1) return;
+
+  card2.classList.add("revealed");
+  showcaseStep = 2;
+
+  // ✅ enable convo ONLY after card 2
+  showcaseConvoEnabled = true;
+
+  setTimeout(() => {
+    showcaseBubble.classList.add("show");
+  }, 600);
+});
+
+const proudDialogue = document.getElementById("proudDialogue");
+const proudImages = document.getElementById("proudImages");
+
+let proudStep = 0;
+
+const proudSequence = [
+  {
+    text: "not only little yaya,",
+    image: null,
+  },
+  {
+    text: "adek, bunda, ayah, sofia",
+    image: "assets/fam.jpg",
+  },
+  {
+    text: "duwi",
+    image: "assets/duwi.jpeg",
+  },
+  {
+    text: "friends",
+    image: "assets/mksfriends.jpg",
+  },
+  {
+    text: "even pejman and jake",
+    image: "assets/pejman.jpeg",
+  },
+  {
+    text: "are proud and believe in yaya.",
+    image: null,
+  },
+];
+
+const finalConvos = [
+  "We want yaya to be happy and bring happiness to everyone.",
+  "that's all.",
+  "we all love you kakak/yayaa/naz/zahra"
+];
+
+let finalConvoIndex = 0;
+let inFinalConvo = false;
+
+
+function startProudScene() {
+  proudStep = 0;
+  proudImages.innerHTML = "";
+  proudDialogue.textContent = proudSequence[0].text;
+}
+
+function advanceProudScene() {
+
+  // --- FINAL CONVO MODE ---
+  if (inFinalConvo) {
+  finalConvoIndex++;
+
+  // finished all final convos → go to wish page
+  if (finalConvoIndex >= finalConvos.length) {
+    startWishPage();
+    return;
+  }
+
+  proudDialogue.textContent = finalConvos[finalConvoIndex];
+  return;
+}
+
+
+  // --- PROUD SEQUENCE ---
+  proudStep++;
+
+  // when proud sequence ends → enter final convo
+  if (proudStep >= proudSequence.length) {
+    inFinalConvo = true;
+    finalConvoIndex = 0;
+    proudDialogue.textContent = finalConvos[0];
+    return;
+  }
+
+  const step = proudSequence[proudStep];
+  proudDialogue.textContent = step.text;
+
+  if (step.image) {
+    const img = document.createElement("img");
+    img.src = step.image;
+    proudImages.appendChild(img);
+  }
+}
+
+
+const finalMessageText = document.getElementById("finalMessageText");
+
+let finalMessageStep = 0;
+
+const finalMessages = [
+  "We want yaya to be happy and bring happiness to everyone.",
+  "that's all.",
+  "we all love you."
+];
+
+function startFinalMessage() {
+  finalMessageStep = 0;
+  finalMessageText.textContent = finalMessages[0];
+  showPage("finalMessage");
+}
+
+function advanceFinalMessage() {
+  finalMessageStep++;
+  if (finalMessageStep >= finalMessages.length) return;
+  finalMessageText.textContent = finalMessages[finalMessageStep];
+}
+
+const wishBubble = document.getElementById("wishBubble");
+const wishInput = document.getElementById("wishInput");
+const wishList = document.getElementById("wishList");
+const wishContinueBtn = document.getElementById("wishContinueBtn");
+const finalCatBubble = document.getElementById("finalCatBubble");
+
+let finalCatStep = 0;
+
+const finalCatConvos = [
+  "happy birthday yaya",
+  "we all love you kakak / yaya / naz / nazliah / zahra"
+];
+
+let wishStep = 0;
+
+const wishConvos = [
+  "let's continue your journey sweet yayaa, with duwi beside you",
+  "and let's have some wishes for your future",
+];
+
+function startWishPage() {
+  wishStep = 0;
+  wishBubble.textContent = wishConvos[0];
+  showPage("wish");
+  wishInput.style.display = "none";
+  wishContinueBtn.style.display = "none";
+}
+
+
+function advanceWishConvo() {
+  wishStep++;
+  if (wishStep >= wishConvos.length) {
+  wishInput.style.display = "block";
+  wishContinueBtn.style.display = "block";
+  wishInput.focus();
+  return;
+}
+
+  wishBubble.textContent = wishConvos[wishStep];
+}
+wishInput.addEventListener("keydown", e => {
+  if (e.key !== "Enter") return;
+
+  const text = wishInput.value.trim();
+  if (!text) return;
+
+  const bubble = document.createElement("div");
+  bubble.className = "wish-item";
+  bubble.textContent = text;
+  wishList.appendChild(bubble);
+
+  wishInput.value = "";
+
+});
+
+wishContinueBtn.addEventListener("click", e => {
+  e.stopPropagation();
+
+  // hide global dialogue + global cat
+  dialogueEl.style.display = "none";
+  document.getElementById("cat").style.display = "none";
+
+  finalCatStep = 0;
+  finalCatBubble.textContent = finalCatConvos[0];
+
+  showPage("happinessBar");
+});
+
+
+</script>
+
 </body>
 </html>
